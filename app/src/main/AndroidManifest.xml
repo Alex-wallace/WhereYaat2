@@ -20,9 +20,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <uses-permission
-            android:name="android.permission.INTERNET"/>
+        <uses-permission android:name="android.permission.INTERNET" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -69,7 +67,11 @@
             android:label="@string/title_activity_partner_map" />
         <activity
             android:name=".Mapping"
-            android:label="@string/title_activity_mapping"></activity>
+            android:label="@string/title_activity_mapping" />
+
+        <service
+            android:name=".SQLdataconnection"
+            android:exported="false"></service>
     </application>
 
 </manifest>

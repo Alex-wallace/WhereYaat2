@@ -1,5 +1,8 @@
 package ca.wallacemohawcollege.alex.whereya;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -25,7 +28,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import com.mysql.jdbc.Driver;
+import com.microsoft.sqlserver.jdbc.SQLServerDriver;
+
 
 public class Mapping extends FragmentActivity implements OnMapReadyCallback {
 
@@ -40,8 +44,8 @@ public class Mapping extends FragmentActivity implements OnMapReadyCallback {
     String dbName = "whereyaatdatabase";
     String user = "Capstone_Admin";
     String password = "Swde4321!";
-    String url = "jdbc:sqlserver://whereyaatserver.database.windows.net:1433/whereyaatdatabase";
-            Connection connection = null;
+    String url = "jdbc:sqlserver://whereyaatserver.database.windows.net:1433;database=whereyaatdatabase;user=Capstone_Admin@whereyaatserver;password=Swde4321!;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+    Connection connection = null;
 
     public Mapping() throws SQLException {
     }
@@ -51,14 +55,9 @@ public class Mapping extends FragmentActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapping);
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(url,user,password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        Intent mServiceIntent = new Intent(getApplicationContext(),SQLdataconnection.class);
+        mServiceIntent.setAction("ACTION_CONNECT");
+        getApplicationContext().startService(mServiceIntent);
         locTable first = new locTable();
         locTable second = new locTable();
         locTable third = new locTable();
@@ -235,4 +234,19 @@ public class Mapping extends FragmentActivity implements OnMapReadyCallback {
 
     }
 
+}
+
+// Broadcast receiver for receiving status updates from the IntentService
+class DownloadStateReceiver extends BroadcastReceiver
+{
+    // Prevents instantiation
+    private DownloadStateReceiver() {
+    }
+    // Called when the BroadcastReceiver gets an Intent it's registered to receive
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        /*
+         * Handle Intents here.
+         */
+    }
 }
